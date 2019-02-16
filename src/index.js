@@ -108,7 +108,7 @@ export interface ListListR<GUTS: BoolListGutsR | NonboolListGutsR, R: {+guts: GU
 
 export type ListListCtorR<GUTS: BoolListGutsR | NonboolListGutsR, R: {+guts: GUTS}> = WeakListCtorR<NonboolListGutsR, ListListR<GUTS, R>>;
 
-export { AnyValue, StructValue, ListValue } from "./value";
+export { AnyValue, StructValue, ListValue, CapValue } from "./value";
 export { RefedStruct } from "./guts/struct";
 export { RefedBoolList } from "./guts/boolList";
 export { RefedNonboolList } from "./guts/nonboolList";
