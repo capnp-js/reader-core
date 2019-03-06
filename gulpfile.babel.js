@@ -89,6 +89,7 @@ function browserRollup() {
   return rollup({
     input: "browser/lib/index.js",
     external: [
+      "@capnp-js/bytes",
       "@capnp-js/builder-core",
       "@capnp-js/read-data",
       "@capnp-js/write-data",
@@ -110,6 +111,7 @@ function browserRollup() {
       name: "capnpJsReaderCore",
       sourcemap: true,
       globals: {
+        "@capnp-js/bytes": "capnpJsBytes",
         "@capnp-js/builder-core": "capnpJsBuilderCore",
         "@capnp-js/read-data": "capnpJsReadData",
         "@capnp-js/write-data": "capnpJsWriteData",

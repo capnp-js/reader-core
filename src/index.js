@@ -74,6 +74,7 @@ export interface StructCtorR<R: {+guts: StructGutsR}> extends CtorR<StructGutsR,
   empty(): R;
 }
 export type WeakListCtorR<GUTS: BoolListGutsR | NonboolListGutsR, R: {+guts: GUTS}> = CtorR<GUTS, R>;
+export type PointerElementCtorR<GUTS: BoolListGutsR | NonboolListGutsR | CapGutsR, R: {+guts: GUTS}> = CtorR<GUTS, R>;
 
 //TODO: Consider adding an iterator interface to lists.
 export interface DataListR<T> {
@@ -96,17 +97,16 @@ export interface StructListR<R: {+guts: StructGutsR}> {
 
 export type StructListCtorR<R: {+guts: StructGutsR}> = WeakListCtorR<NonboolListGutsR, StructListR<R>>;
 
-export interface ListListR<GUTS: BoolListGutsR | NonboolListGutsR, R: {+guts: GUTS}> {
+export interface PointerListR<GUTS: BoolListGutsR | NonboolListGutsR | CapGutsR, R: {+guts: GUTS}> {
   +guts: NonboolListGutsR;
   length(): u29 | u30;
-  has(index: u29 | u30): boolean; //TODO: Grep for `boolean` and convert to `bool`?
   get(index: u29 | u30): null | R;
-  map<T, THIS>(fn: (value: null | R, index: u29 | u30, list: ListListR<GUTS, R>) => T, thisArg?: THIS): Array<T>;
-  forEach<THIS>(fn: (value: null | R, index: u29 | u30, list: ListListR<GUTS, R>) => mixed, thisArg?: THIS): void;
-  reduce<T>(fn: (previous: T, current: null | R, index: u29 | u30, list: ListListR<GUTS, R>) => T, acc: T): T;
+  map<T, THIS>(fn: (value: null | R, index: u29 | u30, list: PointerListR<GUTS, R>) => T, thisArg?: THIS): Array<T>;
+  forEach<THIS>(fn: (value: null | R, index: u29 | u30, list: PointerListR<GUTS, R>) => mixed, thisArg?: THIS): void;
+  reduce<T>(fn: (previous: T, current: null | R, index: u29 | u30, list: PointerListR<GUTS, R>) => T, acc: T): T;
 }
 
-export type ListListCtorR<GUTS: BoolListGutsR | NonboolListGutsR, R: {+guts: GUTS}> = WeakListCtorR<NonboolListGutsR, ListListR<GUTS, R>>;
+export type PointerListCtorR<GUTS: BoolListGutsR | NonboolListGutsR | CapGutsR, R: {+guts: GUTS}> = WeakListCtorR<NonboolListGutsR, PointerListR<GUTS, R>>;
 
 export { AnyValue, StructValue, ListValue, CapValue } from "./value";
 export { RefedStruct } from "./guts/struct";

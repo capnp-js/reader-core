@@ -7,6 +7,7 @@ import type { ArenaR, AnyGutsR, WeakListCtorR } from "./index";
 
 import type { NonboolListGutsR } from "./guts/nonboolList";
 
+import { getSubarray } from "@capnp-js/bytes";
 import { isNull } from "@capnp-js/memory";
 
 import { RefedNonboolList } from "./guts/nonboolList";
@@ -42,7 +43,7 @@ export default class Data {
 
   asBytes(): BytesR {
     const end = this.guts.layout.begin + this.guts.layout.length;
-    return this.guts.segment.raw.subarray(this.guts.layout.begin, end);
+    return getSubarray(this.guts.layout.begin, end, this.guts.segment.raw);
   }
 }
 (Data: WeakListCtorR<NonboolListGutsR, Data>);

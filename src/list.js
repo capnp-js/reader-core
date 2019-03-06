@@ -10,16 +10,18 @@ import type {
   AnyGutsR,
   StructCtorR,
   WeakListCtorR,
+  PointerElementCtorR,
   DataListR,
   StructListCtorR,
-  ListListCtorR,
+  PointerListCtorR,
   StructListR,
-  ListListR,
+  PointerListR,
 } from "./index";
 
 import type { StructGutsR } from "./guts/struct";
 import type { BoolListGutsR } from "./guts/boolList";
 import type { NonboolListGutsR } from "./guts/nonboolList";
+import type { CapGutsR } from "./guts/cap";
 
 import * as decode from "@capnp-js/read-data";
 import { inject as injectI64 } from "@capnp-js/int64";
@@ -115,8 +117,8 @@ export function structs<R: {+guts: StructGutsR}>(Element: StructCtorR<R>): Struc
   };
 }
 
-export function lists<GUTS: BoolListGutsR | NonboolListGutsR, R: {+guts: GUTS}>(Element: WeakListCtorR<GUTS, R>): ListListCtorR<GUTS, R> {
-  return class Lists implements ListListR<GUTS, R> {
+export function pointers<GUTS: BoolListGutsR | NonboolListGutsR | CapGutsR, R: {+guts: GUTS}>(Element: PointerElementCtorR<GUTS, R>): PointerListCtorR<GUTS, R> {
+  return class Pointers implements PointerListR<GUTS, R> {
     +guts: NonboolListGutsR;
 
     static intern(guts: NonboolListGutsR): this {
@@ -142,19 +144,6 @@ export function lists<GUTS: BoolListGutsR | NonboolListGutsR, R: {+guts: GUTS}>(
 
     length(): u29 | u30 {
       return this.guts.layout.length;
-    }
-
-    has(index: u29 | u30): boolean {
-      if (index < 0 || this.guts.layout.length <= index) {
-        throw new RangeError();
-      }
-
-      const ref = {
-        segment: this.guts.segment,
-        position: this.guts.pointersBegin() + index * this.guts.stride(),
-      };
-
-      return !isNull(ref);
     }
 
     get(index: u29 | u30): null | R {

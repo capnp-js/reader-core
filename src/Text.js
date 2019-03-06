@@ -7,6 +7,7 @@ import type { ArenaR, AnyGutsR, WeakListCtorR } from "./index";
 
 import type { NonboolListGutsR } from "./guts/nonboolList";
 
+import { getSubarray } from "@capnp-js/bytes";
 import { isNull } from "@capnp-js/memory";
 import { decode } from "@capnp-js/utf8";
 
@@ -47,12 +48,12 @@ export default class Text {
 
   asBytesNull(): BytesR {
     const end = this.guts.layout.begin + this.guts.layout.length;
-    return this.guts.segment.raw.subarray(this.guts.layout.begin, end);
+    return getSubarray(this.guts.layout.begin, end, this.guts.segment.raw);
   }
 
   asBytes(): BytesR {
     const end = this.guts.layout.begin + this.guts.layout.length;
-    return this.guts.segment.raw.subarray(this.guts.layout.begin, end-1);
+    return getSubarray(this.guts.layout.begin, end-1, this.guts.segment.raw);
   }
 
   toString(): string {
